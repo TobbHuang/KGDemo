@@ -24,8 +24,11 @@
 
     <el-row >
       <el-col :span="18"> </el-col>
-      <el-col :span='4'>
-        <el-input v-model="input" placeholder="请输入企业名"></el-input>
+      <el-col :span='2'>
+        <el-input v-model="id" placeholder="请输入id"></el-input>
+      </el-col>
+      <el-col :span='2'>
+        <el-input v-model="depth" placeholder="请输入查询深度(default: 2)"></el-input>
       </el-col>
       <el-col :span='2'>
         <el-button plain @click="$getInfo">检视</el-button>
@@ -56,8 +59,9 @@ export default {
     console.log(this.$route.params)
     return {
       activePage: '/forceGraph',
-      input: this.$route.params.companyName,
-      id : this.$route.params.id,
+      // input: this.$route.params.companyName,
+      id: 1307,
+      depth: 2,
       visible: false,
       computedWeight: 0
     }
@@ -68,6 +72,7 @@ export default {
     companyWeight: state => state.graphData.companyWeight
   }),
   mounted () {
+    // console.log(this.depth)
   },
   methods: {
     $getInfo () {
@@ -76,105 +81,12 @@ export default {
       //   this.visible = true
       // })
     },
-    // initChart () {
-    //   this.$store.dispatch('GetNodesSurroundingCompany', this.input).then(data => {
-    //     this.$store.dispatch('GetLinksSurroundingCompany', this.input).then(data => {
-    //       this.$store.dispatch('GetCompanyWeight', this.input).then(data => {
-    //         this.visible = true
-    //       })
-    //       this.chart = echarts.init(document.getElementById('myChart'), 'macarons')
-    //       this.chart.setOption({
-    //         toolbox: {
-    //           show: true,
-    //           feature: {
-    //             dataView: {
-    //               show: true,
-    //               readOnly: true
-    //             },
-    //             restore: {
-    //               show: true
-    //             },
-    //             saveAsImage: {
-    //               show: true
-    //             }
-    //           }
-    //         },
-    //         animationDuration: 3000,
-    //         animationEasingUpdate: 'quinticInOut',
-    //         series: [{
-    //           name: '关联企业',
-    //           type: 'graph',
-    //           layout: 'force',
-    //           height: 700,
-    //           force: {
-    //             repulsion: 3000,
-    //             edgeLength: 100
-    //           },
-    //           categories: [
-    //             {
-    //               name: '普通企业',
-    //               itemStyle: {
-    //                 normal: {
-    //                   color: '#1f2d3d'
-    //                 }
-    //               }
-    //             },
-    //             {
-    //               name: '核心企业',
-    //               itemStyle: {
-    //                 normal: {
-    //                   color: '#f9a11b'
-    //                 }
-    //               }
-    //             }
-    //           ],
-    //           data: this.nodes,
-    //           links: this.links,
-    //           focusNodeAdjacency: true,
-    //           roam: true,
-    //           label: {
-    //             normal: {
-    //               show: true,
-    //               position: 'top',
-    //               textStyle: {
-    //                 fontSize: 16
-    //               }
-    //             }
-    //           },
-    //           lineStyle: {
-    //             normal: {
-    //               curveness: 0,
-    //               type: 'solid'
-    //             },
-    //             formatter: '{b}'
-    //           },
-    //           edgeLabel: {
-    //             normal: {
-    //               show: false,
-    //               textStyle: {
-    //                 fontSize: 10
-    //               }
-    //             },
-    //             formatter: '{c}'
-    //           }
-    //         }]
-    //       })
-    //     }).catch(error => {
-    //       console.log(error)
-    //     })
-    //   }).catch(error => {
-    //     console.log(error)
-    //   })
-    // }
     initChart () {
-      const p = []
+      let p = {}
       p.id = this.id
-      p.depth = 3
+      p.depth = this.depth
       this.$store.dispatch('GetSubGraphById', p).then(data => {
-        console.log(this.nodes)
-        console.log(this.links)
-
-        //this.visible = true
+        // this.visible = true
         this.chart = echarts.init(document.getElementById('myChart'), 'macarons')
         this.chart.setOption({
           toolbox: {

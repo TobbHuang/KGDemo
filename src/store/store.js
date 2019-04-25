@@ -170,6 +170,8 @@ const graphData = {
     },
     GetSubGraphById ({commit}, p) {
       return new Promise((resolve, reject) => {
+        console.log(p)
+        // console.log(p.)
         getSubGraphById(p.id, p.depth).then(response => {
           commit('SET_SUB_GRAPH_NODES', response.data.obj.nodes)
           commit('SET_SUB_GRAPH_LINKS', response.data.obj.links)
