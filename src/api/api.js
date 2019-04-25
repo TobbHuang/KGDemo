@@ -60,3 +60,9 @@ export function getAllContracts () {
     method: 'get'
   })
 }
+export function getSubGraphById (id, depth) {
+  return request({
+    url: '/company/subgraph?id=' + id + '&depth=' + depth,
+    method: 'get'
+  })
+}

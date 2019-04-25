@@ -154,7 +154,8 @@ export default {
       this.$router.push({
         name: 'subGraph',
         params: {
-          id: this.companyInfo.id
+          id: this.companyInfo.id,
+          companyName: this.companyInfo.companyName
         }
       })
     }
