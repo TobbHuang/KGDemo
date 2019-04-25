@@ -1,4 +1,13 @@
-import { getAllCompanies, getAllLinks, getNodesSurroundingCompany, getLinksSurroundingCompany, getCompanyWeight, getCompanyInfo } from '@/api/api'
+import {
+  getAllCompanies,
+  getAllLinks,
+  getNodesSurroundingCompany,
+  getLinksSurroundingCompany,
+  getCompanyWeight,
+  getCompanyInfo,
+  getCompanyInfoById,
+  getSubGraphById
+} from '@/api/api'
 
 const graphData = {
   state: {
@@ -64,6 +73,7 @@ const graphData = {
             node['draggable'] = 'true'
             node['symbolSize'] = 10
             node['value'] = co.capital
+            node['id'] = co.id
             if (co.core === 1) {
               node['category'] = 1
             } else {
@@ -140,6 +150,29 @@ const graphData = {
       return new Promise((resolve, reject) => {
         getCompanyInfo(companyName).then(response => {
           commit('SET_COMPANY_INFO', response.data.obj)
+          resolve()
+        }).catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+    GetCompanyInfoById ({commit}, id) {
+      return new Promise((resolve, reject) => {
+        getCompanyInfoById(id).then(response => {
+          commit('SET_COMPANY_INFO', response.data.obj)
+          resolve()
+        }).catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+    GetSubGraphById ({commit}, p) {
+      return new Promise((resolve, reject) => {
+        getSubGraphById(p.id, p.depth).then(response => {
+          commit('SET_SUB_GRAPH_NODES', response.data.obj.nodes)
+          commit('SET_SUB_GRAPH_LINKS', response.data.obj.links)
           resolve()
         }).catch(error => {
           console.log(error)

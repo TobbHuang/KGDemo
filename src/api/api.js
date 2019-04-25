@@ -8,7 +8,7 @@ export function getAllLinks () {
 }
 export function getAllCompanies () {
   return request({
-    url: '/graph/getAllCompanies',
+    url: '/company/all',
     method: 'get'
   })
 }
@@ -42,6 +42,12 @@ export function getCompanyInfo (companyName) {
     method: 'get'
   })
 }
+export function getCompanyInfoById (id) {
+  return request({
+    url: '/company/info?id=' + id,
+    method: 'get'
+  })
+}
 export function randomizeContract () {
   return request({
     url: '/contract/randomizeContract',
@@ -51,6 +57,12 @@ export function randomizeContract () {
 export function getAllContracts () {
   return request({
     url: '/contract/getAllContracts',
+    method: 'get'
+  })
+}
+export function getSubGraphById (id, depth) {
+  return request({
+    url: '/company/subgraph?id=' + id + '&depth=' + depth,
     method: 'get'
   })
 }
