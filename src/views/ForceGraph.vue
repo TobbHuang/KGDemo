@@ -138,7 +138,7 @@ export default {
         })
         let that = this
         this.chart.on('click', function (params) {
-          that.$store.dispatch('GetCompanyInfo', params.name).then(data => {
+          that.$store.dispatch('GetCompanyInfoById', params.data.id).then(data => {
             that.dialogFormVisible = true
             console.log(that.dialogFormVisible)
           })
@@ -154,7 +154,7 @@ export default {
       this.$router.push({
         name: 'subGraph',
         params: {
-          companyName: this.companyInfo.companyName
+          id: this.companyInfo.id
         }
       })
     }

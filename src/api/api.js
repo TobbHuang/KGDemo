@@ -8,7 +8,7 @@ export function getAllLinks () {
 }
 export function getAllCompanies () {
   return request({
-    url: '/graph/getAllCompanies',
+    url: '/company/all',
     method: 'get'
   })
 }
@@ -39,6 +39,12 @@ export function resetNodeWeight () {
 export function getCompanyInfo (companyName) {
   return request({
     url: '/graph/showCompanyInfo?companyName=' + companyName,
+    method: 'get'
+  })
+}
+export function getCompanyInfoById (id) {
+  return request({
+    url: '/company/info?id=' + id,
     method: 'get'
   })
 }
