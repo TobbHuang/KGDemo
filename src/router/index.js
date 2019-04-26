@@ -14,11 +14,11 @@ export default new Router({
       path: '/forceGraph',
       name: 'forceGraph',
       component: () => import('@/views/ForceGraph')
-    },{
+    }, {
       path: '/subGraph',
       name: 'subGraph',
       component: () => import('@/views/SubGraph')
-    },{
+    }, {
       path: '/contractUpload',
       name: 'contractUpload',
       component: () => import('@/views/contractUpload')

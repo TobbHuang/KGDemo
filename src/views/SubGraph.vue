@@ -87,6 +87,8 @@ export default {
       p.depth = this.depth
       this.$store.dispatch('GetSubGraphById', p).then(data => {
         // this.visible = true
+        console.log(this.nodes)
+        console.log(this.links)
         this.chart = echarts.init(document.getElementById('myChart'), 'macarons')
         this.chart.setOption({
           toolbox: {
@@ -135,6 +137,9 @@ export default {
             ],
             data: this.nodes,
             links: this.links,
+            // data: [{name: '克拉拉-乔布斯', value: 3},
+            //   {name: '劳伦-鲍威尔', value: 7}],
+            // links:[{source: '克拉拉-乔布斯',target: '劳伦-鲍威尔'}],
             focusNodeAdjacency: true,
             roam: true,
             label: {
