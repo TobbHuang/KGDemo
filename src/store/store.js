@@ -170,8 +170,6 @@ const graphData = {
     },
     GetSubGraphById ({commit}, p) {
       return new Promise((resolve, reject) => {
-        console.log(p)
-        // console.log(p.)
         getSubGraphById(p.id, p.depth).then(response => {
           // nodes
           let companyData = response.data.obj.nodes
@@ -182,6 +180,7 @@ const graphData = {
             node['draggable'] = 'true'
             node['symbolSize'] = 30
             node['value'] = co.capital
+            node['id'] = co.id
             if (co.core === 1) {
               node['category'] = 1
             } else {
