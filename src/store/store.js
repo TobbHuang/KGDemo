@@ -171,13 +171,14 @@ const graphData = {
     GetSubGraphById ({commit}, p) {
       return new Promise((resolve, reject) => {
         getSubGraphById(p.id, p.depth).then(response => {
+          // nodes
           let companyData = response.data.obj.nodes
           const nodes = []
           for (let co of companyData) {
             let node = {}
             node['name'] = co.companyName
             node['draggable'] = 'true'
-            node['symbolSize'] = 10
+            node['symbolSize'] = 30
             node['value'] = co.capital
             node['id'] = co.id
             if (co.core === 1) {
@@ -188,7 +189,7 @@ const graphData = {
             nodes.push(node)
           }
           commit('SET_SUB_GRAPH_NODES', nodes)
-
+          // links
           let linkData = response.data.obj.links
           const companyLinks = []
           for (let l of linkData) {
