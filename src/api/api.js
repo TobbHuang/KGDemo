@@ -62,7 +62,13 @@ export function getAllContracts () {
 }
 export function getSubGraphById (id, depth) {
   return request({
-    url: '/company/subgraph?id=' + id + '&depth=' + depth,
+    url: '/company/subgraphById?id=' + id + '&depth=' + depth,
+    method: 'get'
+  })
+}
+export function getSubGraphByName (name, depth) {
+  return request({
+    url: '/company/subgraphByName?companyName=' + name + '&depth=' + depth,
     method: 'get'
   })
 }

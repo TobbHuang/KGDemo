@@ -173,8 +173,34 @@ const graphData = {
         console.log(p)
         // console.log(p.)
         getSubGraphById(p.id, p.depth).then(response => {
-          commit('SET_SUB_GRAPH_NODES', response.data.obj.nodes)
-          commit('SET_SUB_GRAPH_LINKS', response.data.obj.links)
+          // nodes
+          let companyData = response.data.obj.nodes
+          const nodes = []
+          for (let co of companyData) {
+            let node = {}
+            node['name'] = co.companyName
+            node['draggable'] = 'true'
+            node['symbolSize'] = 30
+            node['value'] = co.capital
+            if (co.core === 1) {
+              node['category'] = 1
+            } else {
+              node['category'] = 0
+            }
+            nodes.push(node)
+          }
+          commit('SET_SUB_GRAPH_NODES', nodes)
+          // links
+          let linkData = response.data.obj.links
+          const companyLinks = []
+          for (let l of linkData) {
+            let link = {}
+            link['source'] = l.partyAName
+            link['target'] = l.partyBName
+            link['value'] = Number(l.linkWeight)
+            companyLinks.push(link)
+          }
+          commit('SET_SUB_GRAPH_LINKS', companyLinks)
           resolve()
         }).catch(error => {
           console.log(error)
