@@ -23,6 +23,10 @@
     </el-row>
 
     <el-row>
+      <el-button @click="getSupplyChain">供应链检视</el-button>
+    </el-row>
+
+    <el-row>
       <div id="forceChart" :style="{width: '100%', height: '700px'}"></div>
     </el-row>
 
@@ -47,7 +51,8 @@ export default {
   data () {
     return {
       chart: null,
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      supplyChainVisible: false
     }
   },
   computed: mapState({
@@ -158,8 +163,13 @@ export default {
           companyName: this.companyInfo.companyName
         }
       })
-    }
+    },
+    getSupplyChain(){
 
+      this.$router.push({
+        name: 'supplyChain'
+      })
+    }
   }
 }
 

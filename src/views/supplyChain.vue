@@ -5,7 +5,7 @@
         <div style="background:#1f2d3d;height:60px">合同</div>
       </el-col>
       <el-col span="6">
-        <el-menu :default-active="$route.path"
+        <el-menu :default-active="$route.parth"
                  mode="horizontal"
                  background-color="#1f2d3d"
                  text-color="#fff"
@@ -22,27 +22,8 @@
       <div style="margin:0px 0px 20px 110px;padding:0;width:820px;height:0px;background-color:lightGrey;overflow:hidden;"></div>
     </el-row>
 
-    <el-row >
-      <el-col :span="18"> </el-col>
-      <el-col :span='10'>
-        <el-input v-model="id" placeholder="请输入公司id"></el-input>
-      </el-col>
-      <el-col :span='2'>
-        <el-input v-model="depth" placeholder="请输入查询深度(default: 2)"></el-input>
-      </el-col>
-      <el-col :span='2'>
-        <el-button plain @click="$getInfo">检视</el-button>
-      </el-col>
-    </el-row>
-
     <el-row>
-      <el-col :span ='4'>
-        <el-card v-if="visible">该企业权重 ：{{companyWeight.toFixed(2)}}</el-card>
-      </el-col>
-    </el-row>
-
-    <el-row>
-      <div id="myChart" :style="{width: '100%', height: '700px'}"/>
+      <div id="myChart" :style="{width: '100%', height: '700px'}"></div>
     </el-row>
 
   </div>
@@ -51,44 +32,24 @@
 <script>
 import echarts from 'echarts'
 import {mapState} from 'vuex'
-
 require('echarts/theme/macarons')
 
 export default {
   data () {
-    console.log(this.$route.params)
     return {
-      activePage: '/forceGraph',
-      companyName: this.$route.params.companyName,
-      id: this.$route.params.id,
-      depth: 2,
-      visible: false,
-      computedWeight: 0
     }
   },
   computed: mapState({
-    nodes: state => state.graphData.subGraphNodes,
-    links: state => state.graphData.subGraphLinks,
-    companyWeight: state => state.graphData.companyWeight
+    nodes: state => state.graphData.supplyChainNodes,
+    links: state => state.graphData.supplyChainLinks
   }),
   mounted () {
-    // console.log(this.depth)
+    this.getSupplyChain()
   },
   methods: {
-    $getInfo () {
-      this.initChart()
-      // this.$store.dispatch('GetCompanyWeight', this.input).then(data => {
-      //   this.visible = true
-      // })
-    },
-    initChart () {
-      let p = {}
-      p.id = this.id
-      p.depth = this.depth
-      this.$store.dispatch('GetSubGraphById', p).then(data => {
+    getSupplyChain () {
+      this.$store.dispatch('GetSupplyChain').then(data => {
         // this.visible = true
-        console.log(this.nodes)
-        console.log(this.links)
         this.chart = echarts.init(document.getElementById('myChart'), 'macarons')
         this.chart.setOption({
           toolbox: {

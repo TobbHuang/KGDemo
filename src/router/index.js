@@ -22,6 +22,10 @@ export default new Router({
       path: '/contractUpload',
       name: 'contractUpload',
       component: () => import('@/views/contractUpload')
+    }, {
+      path: '/supplyChain',
+      name: 'supplyChain',
+      component: () => import('@/views/supplyChain')
     }
   ]
 })

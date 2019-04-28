@@ -8,6 +8,7 @@ import {
   getCompanyInfoById,
   getSubGraphById
 } from '@/api/api'
+import {getSupplyChain} from '../api/api'
 
 const graphData = {
   state: {
@@ -17,7 +18,9 @@ const graphData = {
     subGraphLinks: null,
     companyWeight: null,
     companyInfo: {
-    }
+    },
+    supplyChainNodes: null,
+    supplyChainLinks: null
   },
 
   mutations: {
@@ -32,6 +35,12 @@ const graphData = {
     },
     SET_SUB_GRAPH_LINKS: (state, links) => {
       state.subGraphLinks = links
+    },
+    SET_SUPPLY_CHAIN_NODES: (state, nodes) => {
+      state.supplyChainNodes = nodes
+    },
+    SET_SUPPLY_CHAIN_LINKS: (state, links) => {
+      state.supplyChainLinks = links
     },
     SET_COMPANY_WEIGHT: (state, companyWeight) => {
       state.companyWeight = companyWeight
@@ -200,6 +209,45 @@ const graphData = {
             companyLinks.push(link)
           }
           commit('SET_SUB_GRAPH_LINKS', companyLinks)
+          resolve()
+        }).catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+    GetSupplyChain ({commit}) {
+      return new Promise((resolve, reject) => {
+        getSupplyChain().then(response => {
+          // nodes
+          let companyData = response.data.obj.nodes
+          const nodes = []
+          for (let co of companyData) {
+            let node = {}
+            node['name'] = co.companyName
+            node['draggable'] = 'true'
+            node['symbolSize'] = 30
+            node['value'] = co.capital
+            node['id'] = co.id
+            if (co.core === 1) {
+              node['category'] = 1
+            } else {
+              node['category'] = 0
+            }
+            nodes.push(node)
+          }
+          commit('SET_SUPPLY_CHAIN_NODES', nodes)
+          // links
+          let linkData = response.data.obj.links
+          const companyLinks = []
+          for (let l of linkData) {
+            let link = {}
+            link['source'] = l.partyAName
+            link['target'] = l.partyBName
+            link['value'] = Number(l.linkWeight)
+            companyLinks.push(link)
+          }
+          commit('SET_SUPPLY_CHAIN_LINKS', companyLinks)
           resolve()
         }).catch(error => {
           console.log(error)
