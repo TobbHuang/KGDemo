@@ -78,3 +78,9 @@ export function getSupplyChain () {
     method: 'get'
   })
 }
+export function getContractsByCompanyName (nameA, nameB) {
+  return request({
+    url: '/contract/getByCompanyNames?companyNameA=' + nameA + '&companyNameB=' + nameB,
+    method: 'get'
+  })
+}

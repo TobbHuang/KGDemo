@@ -4,7 +4,7 @@
       <el-col :span="18">
         <div style="background:#1f2d3d;height:60px">合同</div>
       </el-col>
-      <el-col span="6">
+      <el-col :span="6">
         <el-menu :default-active="$route.path"
                  mode="horizontal"
                  background-color="#1f2d3d"
