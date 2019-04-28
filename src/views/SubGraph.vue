@@ -4,7 +4,7 @@
       <el-col :span="18">
         <div style="background:#1f2d3d;height:60px">合同</div>
       </el-col>
-      <el-col span="6">
+      <el-col :span="6">
         <el-menu :default-active="$route.path"
                  mode="horizontal"
                  background-color="#1f2d3d"
@@ -213,9 +213,23 @@ export default {
         })
         let that = this
         this.chart.on('click', function (params) {
-          that.$store.dispatch('GetCompanyInfoById', params.data.companyId).then(data => {
-            that.dialogFormVisible = true
-          })
+         if(params.dataType == "node"){
+           that.$store.dispatch('GetCompanyInfoById', params.data.companyId).then(data => {
+           that.dialogFormVisible = true
+           })
+         }
+        });
+        this.chart.on('dblclick', function (params) {
+          if(params.dataType == "edge"){
+            that.$router.push({
+              name: 'tradeRelation',
+              params: {
+                source: params.data.source,
+                target: params.data.target
+              }
+            })
+            console.log(params)
+          }
         })
       }).catch(error => {
         console.log(error)

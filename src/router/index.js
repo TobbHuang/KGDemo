@@ -26,6 +26,10 @@ export default new Router({
       path: '/supplyChain',
       name: 'supplyChain',
       component: () => import('@/views/supplyChain')
+    }, {
+      path: '/tradeRelation',
+      name: 'tradeRelation',
+      component: () => import('@/views/tradeRelation')
     }
   ]
 })
