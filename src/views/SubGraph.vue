@@ -25,7 +25,7 @@
     <el-row >
       <el-col :span="18"> </el-col>
       <el-col :span='10'>
-        <el-input v-model="companyName" placeholder="请输入公司名"></el-input>
+        <el-input v-model="id" placeholder="请输入公司id"></el-input>
       </el-col>
       <el-col :span='2'>
         <el-input v-model="depth" placeholder="请输入查询深度(default: 2)"></el-input>
@@ -186,9 +186,6 @@ export default {
             ],
             data: this.nodes,
             links: this.links,
-            // data: [{name: '克拉拉-乔布斯', value: 3},
-            //   {name: '劳伦-鲍威尔', value: 7}],
-            // links:[{source: '克拉拉-乔布斯',target: '劳伦-鲍威尔'}],
             focusNodeAdjacency: true,
             roam: true,
             label: {

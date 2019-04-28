@@ -5,7 +5,7 @@
         <div style="background:#1f2d3d;height:60px">合同</div>
       </el-col>
       <el-col span="6">
-        <el-menu :default-active="$route.path"
+        <el-menu :default-active="$route.parth"
                  mode="horizontal"
                  background-color="#1f2d3d"
                  text-color="#fff"
@@ -23,51 +23,34 @@
     </el-row>
 
     <el-row>
-      <el-button @click="getSupplyChain">供应链检视</el-button>
+      <div id="myChart" :style="{width: '100%', height: '700px'}"></div>
     </el-row>
-
-    <el-row>
-      <div id="forceChart" :style="{width: '100%', height: '700px'}"></div>
-    </el-row>
-
-    <!--单击节点显示公司信息-->
-    <el-dialog  title="公司信息" :visible.sync="dialogFormVisible" style="width:800px">
-      <el-row><el-col :span=8>公司名</el-col><el-col :span=16>{{companyInfo.companyName}}</el-col></el-row>
-      <el-row><el-col :span=8>注册资本</el-col><el-col :span=16>{{companyInfo.capital}}万元</el-col></el-row>
-      <el-row><el-col :span=8>核心企业</el-col><el-col :span=16 v-if="companyInfo.core===1">是</el-col><el-col :span=16 v-if="companyInfo.core===0">否</el-col></el-row>
-      <el-row><el-button style="float:right" type="error" plain @click="getSubGraph">查看子图</el-button></el-row>
-    </el-dialog>
 
   </div>
-
 </template>
 
 <script>
 import echarts from 'echarts'
-import { mapState } from 'vuex'
+import {mapState} from 'vuex'
 require('echarts/theme/macarons')
 
 export default {
   data () {
     return {
-      chart: null,
-      dialogFormVisible: false,
-      supplyChainVisible: false
     }
   },
   computed: mapState({
-    nodes: state => state.graphData.nodes,
-    links: state => state.graphData.links,
-    companyInfo: state => state.graphData.companyInfo
+    nodes: state => state.graphData.supplyChainNodes,
+    links: state => state.graphData.supplyChainLinks
   }),
   mounted () {
-    this.initChart()
+    this.getSupplyChain()
   },
   methods: {
-    initChart () {
-      // this.$store.dispatch('GetAllLinks').then(data => {
-      this.$store.dispatch('GetAllCompanies').then(data => {
-        this.chart = echarts.init(document.getElementById('forceChart'), 'macarons')
+    getSupplyChain () {
+      this.$store.dispatch('GetSupplyChain').then(data => {
+        // this.visible = true
+        this.chart = echarts.init(document.getElementById('myChart'), 'macarons')
         this.chart.setOption({
           toolbox: {
             show: true,
@@ -84,15 +67,16 @@ export default {
               }
             }
           },
-          animationDuration: 300,
+          animationDuration: 3000,
           animationEasingUpdate: 'quinticInOut',
           series: [{
-            name: '企业关系',
+            name: '关联企业',
             type: 'graph',
             layout: 'force',
             height: 700,
             force: {
-              repulsion: 30
+              repulsion: 3000,
+              edgeLength: 100
             },
             categories: [
               {
@@ -113,14 +97,16 @@ export default {
               }
             ],
             data: this.nodes,
-            // links: this.links,
+            links: this.links,
             focusNodeAdjacency: true,
             roam: true,
             label: {
               normal: {
-                show: false,
-                position: 'top'
-
+                show: true,
+                position: 'top',
+                textStyle: {
+                  fontSize: 16
+                }
               }
             },
             lineStyle: {
@@ -141,33 +127,8 @@ export default {
             }
           }]
         })
-        let that = this
-        this.chart.on('click', function (params) {
-          that.$store.dispatch('GetCompanyInfoById', params.data.id).then(data => {
-            that.dialogFormVisible = true
-            console.log(that.dialogFormVisible)
-          })
-        })
       }).catch(error => {
         console.log(error)
-      })
-      // }).catch(error => {
-      //   console.log(error)
-      // })
-    },
-    getSubGraph () {
-      this.$router.push({
-        name: 'subGraph',
-        params: {
-          id: this.companyInfo.id,
-          companyName: this.companyInfo.companyName
-        }
-      })
-    },
-    getSupplyChain(){
-
-      this.$router.push({
-        name: 'supplyChain'
       })
     }
   }
