@@ -25,7 +25,7 @@
     <el-row >
       <el-col :span="18"> </el-col>
       <el-col :span='10'>
-        <el-input v-model="id" placeholder="请输入公司id"></el-input>
+        <el-input v-model="companyName" placeholder="请输入公司名"></el-input>
       </el-col>
       <el-col :span='2'>
         <el-input v-model="depth" placeholder="请输入查询深度(default: 2)"></el-input>
