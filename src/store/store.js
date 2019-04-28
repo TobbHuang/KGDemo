@@ -6,7 +6,8 @@ import {
   getCompanyWeight,
   getCompanyInfo,
   getCompanyInfoById,
-  getSubGraphById
+  getSubGraphById,
+  getSubGraphByName
 } from '@/api/api'
 
 const graphData = {
@@ -180,12 +181,57 @@ const graphData = {
             node['draggable'] = 'true'
             node['symbolSize'] = 30
             node['value'] = co.capital
-            node['id'] = co.id
+            // node['id'] = co.id
             if (co.core === 1) {
               node['category'] = 1
             } else {
               node['category'] = 0
             }
+            nodes.push(node)
+          }
+          commit('SET_SUB_GRAPH_NODES', nodes)
+          // links
+          let linkData = response.data.obj.links
+          const companyLinks = []
+          for (let l of linkData) {
+            let link = {}
+            link['source'] = l.partyAName
+            link['target'] = l.partyBName
+            link['value'] = Number(l.linkWeight)
+            companyLinks.push(link)
+          }
+          commit('SET_SUB_GRAPH_LINKS', companyLinks)
+          resolve()
+        }).catch(error => {
+          console.log(error)
+          reject(error)
+        })
+      })
+    },
+    GetSubGraphByName ({commit}, p) {
+      return new Promise((resolve, reject) => {
+        getSubGraphByName(p.companyName, p.depth).then(response => {
+          // nodes
+          let companyData = response.data.obj.nodes
+          const nodes = []
+          for (let co of companyData) {
+            let node = {}
+            node['name'] = co.companyName
+            node['draggable'] = 'true'
+            node['symbolSize'] = 30 * (p.depth - co.distance + 1)
+            node['value'] = co.capital
+            node['companyId'] = co.id
+            // if (co.core === 1) {
+            //   node['category'] = 1
+            // } else {
+            //   node['category'] = 0
+            // }
+            node['category'] = co.distance
+            // node['label'] = {
+            //   normal: {
+            //     show: co.distance < 2
+            //   }
+            // }
             nodes.push(node)
           }
           commit('SET_SUB_GRAPH_NODES', nodes)

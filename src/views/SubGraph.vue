@@ -37,13 +37,21 @@
 
     <el-row>
       <el-col :span ='4'>
-        <el-card v-if="visible">该企业权重 ：{{companyWeight.toFixed(2)}}</el-card>
+        <!--<el-card v-if="visible">该企业权重 ：{{companyWeight.toFixed(2)}}</el-card>-->
       </el-col>
     </el-row>
 
     <el-row>
-      <div id="myChart" :style="{width: '100%', height: '700px'}"/>
+      <div id="myChart" :style="{width: '100%', height: '800px'}"/>
     </el-row>
+
+    <!--单击节点显示公司信息-->
+    <el-dialog  title="公司信息" :visible.sync="dialogFormVisible" style="width:800px">
+      <el-row><el-col :span=8>公司名</el-col><el-col :span=16>{{companyInfo.companyName}}</el-col></el-row>
+      <el-row><el-col :span=8>注册资本</el-col><el-col :span=16>{{companyInfo.capital}}万元</el-col></el-row>
+      <el-row><el-col :span=8>核心企业</el-col><el-col :span=16 v-if="companyInfo.core===1">是</el-col><el-col :span=16 v-if="companyInfo.core===0">否</el-col></el-row>
+      <el-row><el-button style="float:right" type="error" plain @click="refreshGraph">查看子图</el-button></el-row>
+    </el-dialog>
 
   </div>
 </template>
@@ -63,12 +71,14 @@ export default {
       id: this.$route.params.id,
       depth: 2,
       visible: false,
-      computedWeight: 0
+      computedWeight: 0,
+      dialogFormVisible: false
     }
   },
   computed: mapState({
     nodes: state => state.graphData.subGraphNodes,
     links: state => state.graphData.subGraphLinks,
+    companyInfo: state => state.graphData.companyInfo,
     companyWeight: state => state.graphData.companyWeight
   }),
   mounted () {
@@ -83,9 +93,9 @@ export default {
     },
     initChart () {
       let p = {}
-      p.id = this.id
+      p.companyName = this.companyName
       p.depth = this.depth
-      this.$store.dispatch('GetSubGraphById', p).then(data => {
+      this.$store.dispatch('GetSubGraphByName', p).then(data => {
         // this.visible = true
         console.log(this.nodes)
         console.log(this.links)
@@ -106,6 +116,9 @@ export default {
               }
             }
           },
+          tooltip: {
+            formatter:"{b0} <br> 权重: {c0}"
+          },
           animationDuration: 3000,
           animationEasingUpdate: 'quinticInOut',
           series: [{
@@ -113,24 +126,60 @@ export default {
             type: 'graph',
             layout: 'force',
             height: 700,
+            hoverAnimation:true,
             force: {
-              repulsion: 3000,
+              repulsion: 1000,
               edgeLength: 100
             },
             categories: [
               {
-                name: '普通企业',
+                name: '0层',
                 itemStyle: {
                   normal: {
-                    color: '#1f2d3d'
+                    color: '#ff3333',
+                    borderColor: '#fff',
+                    borderWidth: 1,
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)'
                   }
                 }
               },
               {
-                name: '核心企业',
+                name: '1层',
                 itemStyle: {
                   normal: {
-                    color: '#f9a11b'
+                    color: '#1f2d3d',
+                    opacity:1,
+                    borderColor: '#fff',
+                    borderWidth: 1,
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)'
+                  }
+                }
+              },
+              {
+                name: '2层',
+                itemStyle: {
+                  normal: {
+                    color: '#1f2d3d',
+                    opacity:0.6,
+                    borderColor: '#fff',
+                    borderWidth: 1,
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)'
+                  }
+                }
+              },
+              {
+                name: '3层',
+                itemStyle: {
+                  normal: {
+                    color: '#1f2d3d',
+                    opacity:0.4,
+                    borderColor: '#fff',
+                    borderWidth: 1,
+                    shadowBlur: 10,
+                    shadowColor: 'rgba(0, 0, 0, 0.3)'
                   }
                 }
               }
@@ -158,20 +207,28 @@ export default {
               },
               formatter: '{b}'
             },
-            edgeLabel: {
-              normal: {
-                show: false,
-                textStyle: {
-                  fontSize: 10
-                }
-              },
-              formatter: '{c}'
+            emphasis: {
+              lineStyle: {
+                width: 10
+              }
             }
           }]
+        })
+        let that = this
+        this.chart.on('click', function (params) {
+          that.$store.dispatch('GetCompanyInfoById', params.data.companyId).then(data => {
+            that.dialogFormVisible = true
+          })
         })
       }).catch(error => {
         console.log(error)
       })
+    },
+    refreshGraph () {
+      console.log(this.companyInfo)
+      this.dialogFormVisible = false
+      this.companyName = this.companyInfo.companyName
+      this.$getInfo()
     }
   }
 }
