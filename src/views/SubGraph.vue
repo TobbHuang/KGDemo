@@ -67,7 +67,8 @@ export default {
     console.log(this.$route.params)
     return {
       activePage: '/forceGraph',
-      companyName: this.$route.params.companyName,
+      // companyName: this.$route.params.companyName,
+      companyName: '锐迪科微电子（上海）有限公司',
       id: this.$route.params.id,
       depth: 2,
       visible: false,
@@ -87,9 +88,6 @@ export default {
   methods: {
     $getInfo () {
       this.initChart()
-      // this.$store.dispatch('GetCompanyWeight', this.input).then(data => {
-      //   this.visible = true
-      // })
     },
     initChart () {
       let p = {}
@@ -117,7 +115,7 @@ export default {
             }
           },
           tooltip: {
-            formatter:"{b0} <br> 权重: {c0}"
+            formatter: '{b0} <br> 权重: {c0}'
           },
           animationDuration: 3000,
           animationEasingUpdate: 'quinticInOut',
@@ -126,7 +124,7 @@ export default {
             type: 'graph',
             layout: 'force',
             height: 700,
-            hoverAnimation:true,
+            hoverAnimation: true,
             force: {
               repulsion: 1000,
               edgeLength: 100
@@ -149,7 +147,7 @@ export default {
                 itemStyle: {
                   normal: {
                     color: '#1f2d3d',
-                    opacity:1,
+                    opacity: 1,
                     borderColor: '#fff',
                     borderWidth: 1,
                     shadowBlur: 10,
@@ -162,7 +160,7 @@ export default {
                 itemStyle: {
                   normal: {
                     color: '#1f2d3d',
-                    opacity:0.6,
+                    opacity: 0.6,
                     borderColor: '#fff',
                     borderWidth: 1,
                     shadowBlur: 10,
@@ -175,7 +173,7 @@ export default {
                 itemStyle: {
                   normal: {
                     color: '#1f2d3d',
-                    opacity:0.4,
+                    opacity: 0.4,
                     borderColor: '#fff',
                     borderWidth: 1,
                     shadowBlur: 10,
@@ -213,14 +211,14 @@ export default {
         })
         let that = this
         this.chart.on('click', function (params) {
-         if(params.dataType == "node"){
-           that.$store.dispatch('GetCompanyInfoById', params.data.companyId).then(data => {
-           that.dialogFormVisible = true
-           })
-         }
-        });
+          if (params.dataType == 'node') {
+            that.$store.dispatch('GetCompanyInfoById', params.data.companyId).then(data => {
+              that.dialogFormVisible = true
+            })
+          }
+        })
         this.chart.on('dblclick', function (params) {
-          if(params.dataType == "edge"){
+          if (params.dataType == 'edge') {
             that.$router.push({
               name: 'tradeRelation',
               params: {

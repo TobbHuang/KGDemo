@@ -279,7 +279,7 @@ const graphData = {
             node['draggable'] = 'true'
             node['symbolSize'] = 30
             node['value'] = co.capital
-            node['id'] = co.id
+            // node['id'] = co.id
             if (co.core === 1) {
               node['category'] = 1
             } else {
@@ -296,6 +296,10 @@ const graphData = {
             link['source'] = l.partyAName
             link['target'] = l.partyBName
             link['value'] = Number(l.linkWeight)
+
+            let normal = {}
+            normal['width'] = Number(l.linkWeight) / 10000
+            link['lineStyle'] = normal
             companyLinks.push(link)
           }
           commit('SET_SUPPLY_CHAIN_LINKS', companyLinks)

@@ -4,7 +4,7 @@
       <el-col :span="18">
         <div style="background:#1f2d3d;height:60px">合同</div>
       </el-col>
-      <el-col span="6">
+      <el-col :span="6">
         <el-menu :default-active="$route.parth"
                  mode="horizontal"
                  background-color="#1f2d3d"
@@ -50,6 +50,8 @@ export default {
     getSupplyChain () {
       this.$store.dispatch('GetSupplyChain').then(data => {
         // this.visible = true
+        console.log(this.nodes)
+        console.log(this.links)
         this.chart = echarts.init(document.getElementById('myChart'), 'macarons')
         this.chart.setOption({
           toolbox: {
@@ -66,6 +68,9 @@ export default {
                 show: true
               }
             }
+          },
+          tooltip: {
+            formatter: '{b0} <br> 权重: {c0}'
           },
           animationDuration: 3000,
           animationEasingUpdate: 'quinticInOut',
@@ -98,6 +103,15 @@ export default {
             ],
             data: this.nodes,
             links: this.links,
+            // data: [{name: '应用材料（中国）有限公司', draggable: 'true', symbolSize: 30, value: 0, category: 0}, {name: '安森美半导体（上海）有限公司', draggable: 'true', symbolSize: 30, value: 0, category: 0}],
+            // links: [{source: '安森美半导体（上海）有限公司',
+            //   target: '应用材料（中国）有限公司',
+            //   lineStyle: {
+            //     normal: {
+            //       width: 20
+            //     }}
+            // }
+            // ],
             focusNodeAdjacency: true,
             roam: true,
             label: {
@@ -109,21 +123,22 @@ export default {
                 }
               }
             },
+            edgeSymbol: ['circle', 'arrow'],
             lineStyle: {
               normal: {
                 curveness: 0,
                 type: 'solid'
+                // width: 20
               },
-              formatter: '{b}'
+              // formatter: '{b}'
+              formatter: function (params) {
+                return params.data.name
+              }
             },
-            edgeLabel: {
-              normal: {
-                show: false,
-                textStyle: {
-                  fontSize: 10
-                }
-              },
-              formatter: '{c}'
+            emphasis: {
+              lineStyle: {
+                width: 10
+              }
             }
           }]
         })
