@@ -8,7 +8,7 @@ import {
   getCompanyInfoById,
   getSubGraphById,
   getSubGraphByName,
-  getContractsByCompanyName
+  getRelationDetailByCompanyNames
 } from '@/api/api'
 import {getSupplyChain} from '../api/api'
 
@@ -23,7 +23,7 @@ const graphData = {
     },
     supplyChainNodes: null,
     supplyChainLinks: null,
-    contractTable: null
+    relationDetail: null
   },
 
   mutations: {
@@ -51,8 +51,8 @@ const graphData = {
     SET_COMPANY_INFO: (state, companyInfo) => {
       state.companyInfo = companyInfo
     },
-    SET_CONTRACT_TABLE: (state, contractTable) => {
-      state.contractTable = contractTable
+    SET_RELATION_DETAIL: (state, relationDetail) => {
+      state.relationDetail = relationDetail
     }
   },
   actions: {
@@ -310,10 +310,10 @@ const graphData = {
         })
       })
     },
-    GetContractsByCompanyName ({commit}, p) {
+    GetRelationDetailByCompanyName ({commit}, p) {
       return new Promise((resolve, reject) => {
-        getContractsByCompanyName(p.source, p.target).then(response => {
-          commit('SET_CONTRACT_TABLE', response.data.obj)
+        getRelationDetailByCompanyNames(p.source, p.target, p.monthNum).then(response => {
+          commit('SET_RELATION_DETAIL', response.data.obj)
           resolve()
         }).catch(error => {
           console.log(error)
