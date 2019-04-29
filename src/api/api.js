@@ -78,9 +78,9 @@ export function getSupplyChain () {
     method: 'get'
   })
 }
-export function getContractsByCompanyName (nameA, nameB) {
+export function getRelationDetailByCompanyNames (nameA, nameB, monthNum) {
   return request({
-    url: '/contract/getByCompanyNames?companyNameA=' + nameA + '&companyNameB=' + nameB,
+    url: '/contract/getRelationDetailByCompanyNames?companyNameA=' + nameA + '&companyNameB=' + nameB + '&monthNum=' + monthNum,
     method: 'get'
   })
 }
