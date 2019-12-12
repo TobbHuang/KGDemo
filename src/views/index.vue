@@ -5,7 +5,7 @@
         <div style="background:#1f2d3d;height:60px">合同</div>
       </el-col>
       <el-col span="6">
-        <el-menu :default-active="$route.parth"
+        <el-menu :default-active="$route.path"
                  mode="horizontal"
                  background-color="#1f2d3d"
                  text-color="#fff"
@@ -14,6 +14,8 @@
           <el-menu-item index="/forceGraph">系统所有企业</el-menu-item>
           <el-menu-item index="/subGraph">小图</el-menu-item>
           <el-menu-item index="/contractUpload">合同批量导入</el-menu-item>
+          <el-menu-item index="/metaModel">元模型</el-menu-item>
+          <el-menu-item index="/preprocess">预处理</el-menu-item>
         </el-menu>
       </el-col>
     </el-row>

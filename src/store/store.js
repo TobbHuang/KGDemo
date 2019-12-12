@@ -23,7 +23,9 @@ const graphData = {
     },
     supplyChainNodes: null,
     supplyChainLinks: null,
-    relationDetail: null
+    relationDetail: null,
+    metaModelNodes: null,
+    metaModelEdges: null
   },
 
   mutations: {
@@ -53,6 +55,12 @@ const graphData = {
     },
     SET_RELATION_DETAIL: (state, relationDetail) => {
       state.relationDetail = relationDetail
+    },
+    SET_META_MODEL_NODES: (state, metaModelNodes) => {
+      state.metaModelNodes = metaModelNodes
+    },
+    SET_META_MODEL_EDGES: (state, metaModelEdges) => {
+      state.metaModelEdges = metaModelEdges
     }
   },
   actions: {
@@ -230,7 +238,7 @@ const graphData = {
           const nodes = []
           for (let co of companyData) {
             let node = {}
-            node['name'] = co.companyName
+            node['name'] = co.name
             node['draggable'] = 'true'
             node['symbolSize'] = 30 * (p.depth - co.distance + 1)
             node['value'] = co.capital
